@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -6,15 +6,17 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.LightSensor;
 
 /**
+ * Test Opmode for a color and light sensor
  * Created by Marcel Alexander Wagner on 9/22/16.
  */
 
 @TeleOp (name = "Sensortest", group = "Concept")
+@SuppressWarnings("unused")
 public class SensorTest extends OpMode {
 
-    ColorSensor cm=null;
-    LightSensor lm=null;
-    String errorm="";
+    private ColorSensor cm=null;
+    private LightSensor lm=null;
+    private String errorm="";
 
     @Override
     public void init() {

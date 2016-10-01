@@ -38,6 +38,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.net.wifi.WifiManager;
@@ -528,4 +532,51 @@ public class FtcRobotControllerActivity extends Activity {
       });
     }
   }
+
+
+
+
+  //Stuff for Sensormanager-> angles
+  final static float[] mValuesMagnet      = new float[3];
+  final static float[] mValuesAccel       = new float[3];
+  final static float[] mValuesOrientation = new float[3];
+  final static float[] mRotationMatrix    = new float[9];
+
+  /**
+   * Calculates the latest the rotationmatrix and returns it
+   * @return the rotation matrix (x,y,z)
+   */
+  public static float[] getmValuesOrientation(){
+    SensorManager.getRotationMatrix(mRotationMatrix, null, mValuesAccel, mValuesMagnet);
+    SensorManager.getOrientation(mRotationMatrix, mValuesOrientation);
+    return mValuesOrientation;
+  }
+
+  // Register the event listener and sensor type.
+  @SuppressWarnings("unused")
+  public void setListners(SensorManager sensorManager, SensorEventListener mEventListener)
+  {
+    sensorManager.registerListener(mEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+            SensorManager.SENSOR_DELAY_NORMAL);
+    sensorManager.registerListener(mEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+            SensorManager.SENSOR_DELAY_NORMAL);
+  }
+
+  @SuppressWarnings("unused")
+  public void onSensorChanged(SensorEvent event) {
+// Handle the events for which we registered
+    switch (event.sensor.getType()) {
+      case Sensor.TYPE_ACCELEROMETER:
+        System.arraycopy(event.values, 0, mValuesAccel, 0, 3);
+        break;
+
+      case Sensor.TYPE_MAGNETIC_FIELD:
+        System.arraycopy(event.values, 0, mValuesMagnet, 0, 3);
+        break;
+    }
+  }
+
+
+
+
 }
